@@ -5,6 +5,11 @@ const proxyquire = require('proxyquire');
 const clazzMod = require('../src/classModule');
 
 describe.only('Testando...', () => {
+
+    afterEach(() => {
+        sinon.restore()
+    });
+
     it('Proxyquire', () => {
         depObjStub = {};
         const callFuncModule = proxyquire('../src/functionModule', { '../src/dependencyModule': depObjStub })
@@ -28,23 +33,23 @@ describe.only('Testando...', () => {
     })
 
     it('Sinon + Proxyquire + Class', () => {
-        const stubClazz = sinon.createStubInstance(clazzMod.Clazz, {
-            instMethod: sinon.stub().returns('TESTEI.....')
+        const stubClazzObj = sinon.createStubInstance(clazzMod.Clazz, {
+            instMethod: sinon.stub().returns('instMethod Mockado')
         });
-        sinon.stub(clazzMod, 'Clazz').returns(stubClazz);
-        const callFunc2Module = proxyquire('../src/functionModule', { clazz: stubClazz })
+        sinon.stub(clazzMod, 'Clazz').returns(stubClazzObj);
+        const callFunc2Module = proxyquire('../src/functionModule', { clazzMod: stubClazzObj })
         console.log(callFunc2Module.func2Module());
     })
 
-    it.only('Sinon + Proxyquire + Class + getter', () => {
-
-        const clazzObj = new clazzMod.Clazz('TESTAREIS');
-        console.log(clazzObj.message)
-
-        sinon.stub(clazzObj, 'message').get(function getterFn() {
+    it('Sinon + Proxyquire + Class + getter', () => {
+        const stubClazzObj = sinon.createStubInstance(clazzMod.Clazz, {
+            instMethod: sinon.stub().returns('instMethod Mockado'),
+        });
+        sinon.stub(stubClazzObj, 'message').get(function getterFn() {
             return 'TESTAREI MAIS NÃO';
         });
-
-        console.log(clazzObj.message)
+        sinon.stub(clazzMod, 'Clazz').returns(stubClazzObj);
+        const callFunc3Module = proxyquire('../src/functionModule', { clazzMod: stubClazzObj })
+        console.log(callFunc3Module.func3Module())
     })
 });

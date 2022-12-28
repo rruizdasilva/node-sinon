@@ -1,14 +1,15 @@
 const depModule = require('./dependencyModule');
 const { Clazz } = require('./classModule');
-const clazzObj = new Clazz('TEST TEST TEST');
 
 const funcModule = () => depModule.dependencyObject;
 
 const func2Module = () => {
+    const clazzObj = new Clazz('TEST TEST TEST');
     return clazzObj.instMethod();
 }
 
 const func3Module = () => {
+    const clazzObj = new Clazz('TEST TEST TEST'); 
     return clazzObj.message;
 }
 
