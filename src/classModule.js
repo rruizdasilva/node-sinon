@@ -1,9 +1,17 @@
-const { funcModule } = require("./functionModule")
-
 class Clazz {
+
+    #message
+
+    constructor(message) {
+        this.#message = message;
+    }
 
     instMethod() {
         return 'instMethod'
+    }
+
+    get message() {
+        return this.#message;
     }
 }
 
